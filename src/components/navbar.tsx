@@ -1,0 +1,116 @@
+'use client'
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownDivider,
+  DropdownHeader,
+  DropdownItem,
+  Navbar,
+  NavbarBrand,
+  NavbarCollapse,
+  NavbarLink,
+  NavbarToggle,
+} from "flowbite-react";
+
+import {
+  ConnectButton,
+  ErrorCode
+} from "@suiet/wallet-kit";
+
+import { useGlobal } from "./context/GlobalProvider";
+import { useEffect } from "react";
+import { isValidAuthorization } from "@/app/lib/token";
+
+export default function BassinetNavbar() {
+  const {isLogin, setIsLogin} = useGlobal();
+
+  useEffect(()=>{
+    const isLogon = isValidAuthorization();
+    console.log("isLogon:" + isLogon);
+    console.log("isLogin:" + isLogin);
+    if (isLogon != isLogin) {
+      setIsLogin(isLogon);
+    }
+  }, [isLogin, setIsLogin]);
+  
+  return <>
+    <Navbar fluid rounded>
+      <NavbarBrand href="/">
+        <picture>
+          <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Bassinet Logo" />
+        </picture>
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Bassinet</span>
+      </NavbarBrand>
+      {isLogin ? (
+        <NavbarCollapse>
+          <Dropdown label="创作" inline>
+            <DropdownItem><a href="/create_collection">专辑</a></DropdownItem>
+            <DropdownDivider />
+            <DropdownItem><a href="/create_article">文章</a></DropdownItem>
+            {/* <DropdownItem>图集</DropdownItem>
+            <DropdownItem>视频</DropdownItem>
+            <DropdownItem>音频</DropdownItem>
+            <DropdownItem>文件夹</DropdownItem> */}
+          </Dropdown>
+          <NavbarLink href="#">我的</NavbarLink>
+        </NavbarCollapse>):(
+        <NavbarCollapse>
+          <NavbarLink href="/signin">Sign In</NavbarLink>
+          <NavbarLink href="/signup">Sign Up</NavbarLink>
+        </NavbarCollapse>)
+      }
+      
+      <div className="max-w-2xl min-w-md">
+        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+        <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search ..." required />
+            <Button className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</Button>
+        </div>
+      </div>
+      {isLogin &&
+      <div className="flex md:order-2">
+        <ConnectButton className=""
+          onConnectError={(error) => {
+            if (error.code === ErrorCode.WALLET__CONNECT_ERROR__USER_REJECTED) {
+              console.warn(
+                "user rejected the connection to " + error.details?.wallet
+              );
+            } else {
+              console.warn("unknown connect error: ", error);
+            }
+          }}
+        />
+      </div>
+      }
+      {isLogin ? (
+        <div className="flex md:order-3">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt="User settings" img="/favicon.svg" rounded />
+            }
+          >
+            <DropdownHeader>
+              <span className="block text-sm">Bonnie Green</span>
+              <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+            </DropdownHeader>
+            <DropdownItem>Dashboard</DropdownItem>
+            <DropdownItem>Settings</DropdownItem>
+            <DropdownItem>Earnings</DropdownItem>
+            <DropdownDivider />
+            <DropdownItem>Sign out</DropdownItem>
+          </Dropdown>
+          <NavbarToggle />
+        </div>):
+        (<div className="flex md:order-2"></div>)
+      }
+    </Navbar>
+    </>
+}
