@@ -10,7 +10,7 @@ type Props = {
     searchParams: Promise<{ [key: string]: string}>;
   };
 
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 100;
 export default function HomePage({searchParams}:Props) {
     const  currSearchParams = use(searchParams) ;
     const search_page = currSearchParams.page;
@@ -40,14 +40,14 @@ export default function HomePage({searchParams}:Props) {
         {errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
         ) : items && items.length > 0 ? (
-            <div className="mb-48 w-full">
+            <div className="mb-36 w-full">
             <InfiniteScroll 
                 initialItems={items}
                 initialPage={page}
                 limit={page_size}
                 totalItems={pageInfo.totalItems}
                 renderItem={(item) => (
-                <div key={item.id} className="h-[310px]">
+                <div key={item.id} className="h-full">
                     <Collection collection={item} />
                 </div>
                 )}

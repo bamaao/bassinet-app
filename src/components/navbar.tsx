@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Avatar,
   Button,
@@ -15,24 +15,87 @@ import {
 
 import {
   ConnectButton,
-  ErrorCode
+  ErrorCode,
 } from "@suiet/wallet-kit";
-
 import { useGlobal } from "./context/GlobalProvider";
+import { getAuthorization, isValidAuthorization } from "@/app/lib/token";
+import { BASE_URL } from "@/app/lib/utils/url";
 import { useEffect } from "react";
-import { isValidAuthorization } from "@/app/lib/token";
+import { AccountInfo } from "@/types/account";
+// import { useRouter } from 'next/navigation';
+
+interface AccountWrapper {
+  account: AccountInfo
+}
 
 export default function BassinetNavbar() {
-  const {isLogin, setIsLogin} = useGlobal();
+  const {isLogin, setIsLogin, account, setAccount} = useGlobal();
+  // const router = useRouter();
+
+  function AccountDropdownItem({account}: AccountWrapper) {
+    if (account != null) {
+      if (account.wallet_address == null) {
+        return <>
+        <DropdownItem><a href="/binding_wallet">绑定钱包</a></DropdownItem>
+        </>
+      }else {
+        if (account.package_id == null) {
+          return <>
+          <DropdownItem><a href="/open_service">发行Token</a></DropdownItem>
+          </>
+        }
+      }
+    }
+  }
+
+  function sign_out() {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("account_info");
+    window.location.reload();
+  }
 
   useEffect(()=>{
+    async function setAccountInfo() {
+      const authorization = getAuthorization();
+      const account_response = await fetch(BASE_URL + '/account_info', {
+          method: 'GET',
+          headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "Accept": "application/json",
+              "Authorization": authorization
+          }
+      });
+      if (!account_response.ok) {
+          throw new Error("Invalid Account");
+      }
+      const account_info = await account_response.json();
+      console.log(account_info);
+      localStorage.setItem("account_info", JSON.stringify(account_info));
+      const account : AccountInfo = {
+        account_id: account_info.account_id,
+        nick_name: account_info.nick_name,
+        avatar: account_info.avatar,
+        wallet_address: account_info.wallet_addrress,
+        package_id: account_info.package_id
+      };
+      setAccount(account);
+    }
+
     const isLogon = isValidAuthorization();
-    console.log("isLogon:" + isLogon);
-    console.log("isLogin:" + isLogin);
+    if (isLogon) {
+      const local_account_info = localStorage.getItem("account_info");
+      if (local_account_info == null) {
+        setAccountInfo();
+      }else {
+        setAccount(JSON.parse(local_account_info));
+      }
+    }else {
+      localStorage.removeItem("account_info");
+    }
     if (isLogon != isLogin) {
       setIsLogin(isLogon);
     }
-  }, [isLogin, setIsLogin]);
+  }, [isLogin, setIsLogin, setAccount]);
   
   return <>
     <Navbar fluid rounded>
@@ -53,7 +116,7 @@ export default function BassinetNavbar() {
             <DropdownItem>音频</DropdownItem>
             <DropdownItem>文件夹</DropdownItem> */}
           </Dropdown>
-          <NavbarLink href="#">我的</NavbarLink>
+          <NavbarLink href="/my_collections">我的</NavbarLink>
         </NavbarCollapse>):(
         <NavbarCollapse>
           <NavbarLink href="/signin">Sign In</NavbarLink>
@@ -94,18 +157,16 @@ export default function BassinetNavbar() {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt="User settings" img="/favicon.svg" rounded />
+              <Avatar alt="User settings" img={account.avatar} rounded />
             }
           >
             <DropdownHeader>
-              <span className="block text-sm">Bonnie Green</span>
-              <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+              <span className="block text-sm">{account.nick_name}</span>
+              {/* <span className="block truncate text-sm font-medium">name@flowbite.com</span> */}
             </DropdownHeader>
-            <DropdownItem>Dashboard</DropdownItem>
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownItem>Earnings</DropdownItem>
+            <AccountDropdownItem account={account} />
             <DropdownDivider />
-            <DropdownItem>Sign out</DropdownItem>
+            <DropdownItem onClick={sign_out}>Sign out</DropdownItem>
           </Dropdown>
           <NavbarToggle />
         </div>):

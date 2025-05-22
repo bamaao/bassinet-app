@@ -103,6 +103,24 @@ export default function SignInPage() {
         const token = data.token_type + ' ' + data.access_token;
         // localforage.setItem<string>("access_token", token);
         localStorage.setItem("access_token", token);
+
+        // // 获取用户信息
+        // const authorization = getAuthorization();
+        // const account_response = await fetch(BASE_URL + '/account_info', {
+        //     method: 'GET',
+        //     headers: {
+        //         "Content-Type": "application/json;charset=utf-8",
+        //         "Accept": "application/json",
+        //         "Authorization": authorization
+        //     }
+        // });
+        // if (!account_response.ok) {
+        //     throw new Error("Invalid Account");
+        // }
+        // const account_info = await account_response.json();
+        // console.log(account_info);
+        // localStorage.setItem("account_info", JSON.stringify(account_info));
+        // setAccount(account_info);
         setIsLogin(true);
     }
 

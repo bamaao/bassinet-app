@@ -1,3 +1,4 @@
+"use client";
 import * as ed from '@noble/ed25519';
 import {sha512} from '@noble/hashes/sha2';
 import { createDecipheriv, createHmac, createCipheriv, randomBytes} from 'node:crypto';
@@ -78,7 +79,7 @@ export function keystore(password: string, plaintext: string): Keystore{
 }
 
 /// 根据private key获取public key
-function pubKey(privateKeyHexStr: string): string {
+export function pubKey(privateKeyHexStr: string): string {
     const privateKey = ed.etc.hexToBytes(privateKeyHexStr);
     const pubKey = ed.getPublicKey(privateKey);
     return ed.etc.bytesToHex(pubKey);

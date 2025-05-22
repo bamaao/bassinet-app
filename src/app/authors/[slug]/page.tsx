@@ -1,17 +1,20 @@
 'use client'
 
-import { fetchItems } from '@/services/PublicCollectionService';
+import { getAuthorCollections } from '@/services/PublicCollectionService';
 import InfiniteScroll from '@/components/InfiniteScroll';
-import Collection from '@/components/CollectionCard'; // Your item rendering component
 import {use, useEffect, useState} from 'react';
 import { CollectionType, PageInfoType } from '@/types/collection';
+import { useParams } from 'next/navigation';
+import PublicCollection from '@/components/PublicCollectionCard';
 
 type Props = {
     searchParams: Promise<{ [key: string]: string}>;
   };
 
-const DEFAULT_LIMIT = 10;
-export default function HomePage({searchParams}:Props) {
+const DEFAULT_LIMIT = 100;
+export default function AuthorPage({searchParams}:Props) {
+    const params = useParams();
+    const author_id = params["slug"];
     const  currSearchParams = use(searchParams) ;
     const search_page = currSearchParams.page;
     const search_limit = currSearchParams.limit;
@@ -23,7 +26,7 @@ export default function HomePage({searchParams}:Props) {
     const [pageInfo, setPageInfo] = useState<PageInfoType>({} as PageInfoType);
 
     const fetchData = async () => {
-        const { items, error: errorMessage, pageInfo} = await fetchItems(page, page_size);
+        const { items, error: errorMessage, pageInfo} = await getAuthorCollections(1, 1000, "" + author_id);
         // console.log("length:" + items.length);
         setItems(items);
         setErrorMessage(errorMessage == null ? "" : errorMessage);
@@ -34,6 +37,7 @@ export default function HomePage({searchParams}:Props) {
         fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     return (
         <main className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Collection Catalog</h1>
@@ -48,8 +52,8 @@ export default function HomePage({searchParams}:Props) {
                 limit={page_size}
                 totalItems={pageInfo.totalItems}
                 renderItem={(item) => (
-                <div key={item.id} className="h-[310px]">
-                    <Collection collection={item} />
+                <div key={item.id} className="h-full">
+                    <PublicCollection collection={item} />
                 </div>
                 )}
             />

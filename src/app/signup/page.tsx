@@ -24,7 +24,6 @@ export default function SignUpPage() {
         const request_id_response = await fetch(BASE_URL + '/request_id');
         const request_id = await request_id_response.text();
         console.log(request_id);
-
         try {
             const form = document.getElementById("signupForm");
             if (form == null) {
