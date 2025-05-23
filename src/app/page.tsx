@@ -8,7 +8,10 @@ export default function Home() {
           <div className="flex flex-col justify-between p-4 leading-normal">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">这是一段简短的描述</h5>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                创作者：1. 注册创建账户；2. 绑定钱包；3. 绑定钱包后可以开通服务，发行Token；4. 创作者开发专辑，可以专辑发行NFT进行售卖。
               </p>
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">用户：1. 注册创建账户；2. 对感兴趣的专辑付费（Minting专辑发行的NFT）。</p>
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">钱包使用的是Suiet，testnet环境。</p>
           </div>
       </a>
       <div></div>

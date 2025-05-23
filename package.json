@@ -22,6 +22,7 @@
     "@types/file-saver": "^2.0.7",
     "@uiw/react-md-editor": "^4.0.5",
     "cm6-theme-basic-dark": "^0.2.0",
+    "crypto-browserify": "^3.12.1",
     "file-saver": "^2.0.5",
     "flowbite-react": "^0.11.7",
     "flowbite-typography": "^1.0.5",
@@ -34,7 +35,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
-    "scrypt-js": "^3.0.1"
+    "scrypt-js": "^3.0.1",
+    "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
