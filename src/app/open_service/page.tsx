@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import * as ed from '@noble/ed25519';
 import {sha512} from '@noble/hashes/sha2';
-import { BASE_URL } from '../lib/utils/url';
+import { BASE_URL } from '../lib/utils/constants';
 import { useWallet } from '@suiet/wallet-kit';
 import { Transaction } from '@mysten/sui/transactions';
 import { getAuthorization } from '../lib/token';

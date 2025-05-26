@@ -1,6 +1,6 @@
 'use client'
 
-import { BASE_URL } from "@/app/lib/utils/url";
+import { BASE_URL } from "@/app/lib/utils/constants";
 import Article from "@/components/ArticleCard";
 import { CollectionType } from "@/types/collection";
 import { useParams } from "next/navigation";

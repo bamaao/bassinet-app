@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
+        fs: false,
+        os: false,
+        path: false,
         stream: require.resolve('stream-browserify'),
         crypto: require.resolve('crypto-browserify'),
       };

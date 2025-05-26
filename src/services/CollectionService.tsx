@@ -1,6 +1,6 @@
 'use client'
 import { getAuthorization, isValidAuthorization } from "@/app/lib/token";
-import { BASE_URL } from "@/app/lib/utils/url";
+import { BASE_URL } from "@/app/lib/utils/constants";
 import { CollectionType} from "@/types/collection";
 
 export async function fetchItems(page : number, pageSize: number) {

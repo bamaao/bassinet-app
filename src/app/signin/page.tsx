@@ -6,7 +6,7 @@ import localforage from 'localforage';
 import { privateKeyDecrypt } from '../lib/account';
 import { useGlobal } from '@/components/context/GlobalProvider';
 import { useRouter } from 'next/navigation';
-import { BASE_URL } from '../lib/utils/url';
+import { BASE_URL } from '../lib/utils/constants';
 ed.etc.sha512Sync = (...m) => sha512(ed.etc.concatBytes(...m));
 
 export default function SignInPage() {

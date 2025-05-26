@@ -1,13 +1,18 @@
 'use client'
 
-import { fetchItems } from '@/services/CollectionService';
+import { fetchCollections } from '@/services/PublicCollectionService';
 import { CollectionType } from '@/types/collection';
-import { useEffect, useMemo, useState } from 'react';
-import Collection from '@/components/CollectionCard';
+import { use, useEffect, useMemo, useState } from 'react';
+import PublicCollection from '@/components/PublicCollectionCard';
 import MyInfiniteScroll from '@/components/MyInfiniteScroll';
 import { PAGE_SIZE } from '../lib/utils/constants';
 
-export default function MyCollectionsPage() {
+type Props = {
+  searchParams: Promise<{ [key: string]: string}>;
+};
+export default function SearchPage({searchParams}:Props) {
+    const currSearchParams = use(searchParams);
+    const keyword = currSearchParams.keyword;
     const [items, setItems] = useState<CollectionType[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -19,7 +24,7 @@ export default function MyCollectionsPage() {
         if (loading) return;
         setLoading(true);
         try {
-            const data = await fetchItems(page, PAGE_SIZE); // Fetch 2 items per page
+            const data = await fetchCollections(page, PAGE_SIZE, keyword == null ? "" : keyword); // Fetch 2 items per page
             if (data.items.length === 0) {
                 setHasMore(false); // No more items to load
             } else {
@@ -50,7 +55,7 @@ export default function MyCollectionsPage() {
     <>
         <div className="post-list [counter-reset: post-index]">
         {items?.map((collection) => (
-            <Collection key={collection.id} collection={collection} />
+            <PublicCollection key={collection.id} collection={collection} />
         ))}
         </div>
         <div className="text-center text-slate-600 mt-5">

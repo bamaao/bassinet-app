@@ -1,66 +1,66 @@
 'use client'
 
 import { getAuthorCollections } from '@/services/PublicCollectionService';
-import InfiniteScroll from '@/components/InfiniteScroll';
-import {use, useEffect, useState} from 'react';
-import { CollectionType, PageInfoType } from '@/types/collection';
+import {useEffect, useMemo, useState} from 'react';
+import { CollectionType } from '@/types/collection';
 import { useParams } from 'next/navigation';
 import PublicCollection from '@/components/PublicCollectionCard';
+import MyInfiniteScroll from '@/components/MyInfiniteScroll';
+import { PAGE_SIZE } from '@/app/lib/utils/constants';
 
-type Props = {
-    searchParams: Promise<{ [key: string]: string}>;
-  };
-
-const DEFAULT_LIMIT = 100;
-export default function AuthorPage({searchParams}:Props) {
+export default function AuthorCollectionsPage() {
     const params = useParams();
     const author_id = params["slug"];
-    const  currSearchParams = use(searchParams) ;
-    const search_page = currSearchParams.page;
-    const search_limit = currSearchParams.limit;
-    const page = parseInt(search_page || '1');
-    const page_size = parseInt(search_limit || String(DEFAULT_LIMIT));
-
     const [items, setItems] = useState<CollectionType[]>([]);
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [pageInfo, setPageInfo] = useState<PageInfoType>({} as PageInfoType);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [error, setError] = useState("");
+    const collectionIds = useMemo(()=> new Set(), []);
 
-    const fetchData = async () => {
-        const { items, error: errorMessage, pageInfo} = await getAuthorCollections(1, 1000, "" + author_id);
-        // console.log("length:" + items.length);
-        setItems(items);
-        setErrorMessage(errorMessage == null ? "" : errorMessage);
-        setPageInfo(pageInfo);
-    }
+    const loadMore = async () => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            const data = await getAuthorCollections(page, PAGE_SIZE, "" + author_id); // Fetch 2 items per page
+            if (data.items.length === 0) {
+                setHasMore(false); // No more items to load
+            } else {
+                const collectionDatas = data.items.filter(item => !collectionIds.has(item.id));
+                collectionDatas.forEach(item => collectionIds.add(item.id));
+                setItems([...items, ...collectionDatas]);
+                setPage(page + 1);
+            }
+        } catch (error) {
+            let errMsg;
+            if (error instanceof Error) {
+                errMsg = error.message;
+            }else {
+                errMsg = String(error);
+            }
+            // console.error('Error loading more items:', error);
+            setError(errMsg);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    useEffect(()=>{
-        fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    useEffect(() => {
+        loadMore();
+    }, []);
 
     return (
-        <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Collection Catalog</h1>
-        
-        {errorMessage ? (
-            <p className="text-red-500">{errorMessage}</p>
-        ) : items && items.length > 0 ? (
-            <div className="mb-48 w-full">
-            <InfiniteScroll 
-                initialItems={items}
-                initialPage={page}
-                limit={page_size}
-                totalItems={pageInfo.totalItems}
-                renderItem={(item) => (
-                <div key={item.id} className="h-full">
-                    <PublicCollection collection={item} />
-                </div>
-                )}
-            />
-            </div>
-        ) : (
-            <p>No items available</p>
-        )}
-        </main>
+    <>
+        <div className="post-list [counter-reset: post-index]">
+        {items?.map((collection) => (
+            <PublicCollection key={collection.id} collection={collection} />
+        ))}
+        </div>
+        <div className="text-center text-slate-600 mt-5">
+        {error && <p>Error: {error}</p>}
+        {!loading && hasMore && <MyInfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+        {!loading && !hasMore && <p className="text-slate-600">No more items to load.</p>}
+        </div>
+    </>
     );
 }

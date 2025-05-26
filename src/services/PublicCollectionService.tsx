@@ -1,11 +1,11 @@
 'use client'
-import { BASE_URL } from "@/app/lib/utils/url";
+import { BASE_URL } from "@/app/lib/utils/constants";
 import { CollectionType, PageInfoType } from "@/types/collection";
 
-export async function fetchItems(page : number, pageSize: number) {
+export async function fetchCollections(page : number, pageSize: number, keyword: string) {
     try {
         const response = await fetch(
-            BASE_URL + `/collections?page=${page}&page_size=${pageSize}`, {
+            BASE_URL + `/collections?page=${page}&page_size=${pageSize}&keyword=${keyword}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json;charset=utf-8",

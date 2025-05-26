@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import { BASE_URL } from "../lib/utils/url";
+import { BASE_URL } from "../lib/utils/constants";
 import { getAuthorization } from "../lib/token";
 
 export default function FileUpload() {

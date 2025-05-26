@@ -3,7 +3,7 @@
 import Markdown from 'react-markdown';
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { BASE_URL } from "@/app/lib/utils/url";
+import { BASE_URL } from "@/app/lib/utils/constants";
 import { ArticleType } from "@/types/collection";
 
 export default function ArticlePage() {

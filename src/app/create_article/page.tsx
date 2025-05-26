@@ -6,7 +6,7 @@ import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { getAuthorization, isValidAuthorization } from "../lib/token";
-import { BASE_URL } from "../lib/utils/url";
+import { BASE_URL } from "../lib/utils/constants";
 import { ALL_PLUGINS } from '@/components/plugins';
 
 import { ForwardRefEditor  } from '@/components/ForwardRefEditor';

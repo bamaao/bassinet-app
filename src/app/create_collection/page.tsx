@@ -4,7 +4,7 @@ import { Button } from "flowbite-react";
 // import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { getAuthorization } from "../lib/token";
-import { BASE_URL } from "../lib/utils/url";
+import { BASE_URL } from "../lib/utils/constants";
 
 export default function CreateCollectionPage() {
     const [error, setError] = useState<string|null>(null);

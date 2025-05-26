@@ -9,7 +9,7 @@ import {saveAs} from 'file-saver';
 // import localforage from 'localforage';
 import {sha512} from '@noble/hashes/sha2';
 import { keystore } from "../lib/account";
-import { BASE_URL } from "../lib/utils/url";
+import { BASE_URL } from "../lib/utils/constants";
 ed.etc.sha512Sync = (...m) => sha512(ed.etc.concatBytes(...m));
 
 export default function SignUpPage() {
