@@ -1,7 +1,7 @@
 'use client'
 import { getAuthorization, isValidAuthorization } from "@/app/lib/token";
 import { BASE_URL } from "@/app/lib/utils/url";
-import { CollectionType, PageInfoType } from "@/types/collection";
+import { CollectionType} from "@/types/collection";
 
 export async function fetchItems(page : number, pageSize: number) {
     try {
@@ -26,18 +26,18 @@ export async function fetchItems(page : number, pageSize: number) {
         const data = await response.json();
         return {
             items: data.dtos as CollectionType[],
-            error: null,
-            pageInfo: data.page_info as PageInfoType
+            error: null
+            // pageInfo: data.page_info as PageInfoType
         }
     } catch (error) {
         console.error('Error fetching items:', error);
         return {
             items: [],
-            error: 'Failed to load items',
-            pageInfo: {
-                totalItems: 0,
-                totalPages: 0
-            }
+            error: 'Failed to load items'
+            // pageInfo: {
+            //     totalItems: 0,
+            //     totalPages: 0
+            // }
         }
     }
     

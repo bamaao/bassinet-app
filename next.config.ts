@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
 
-  webpack: (config, { isServer, buildId, dev, webpack }) => {
+  webpack: (config, { isServer, webpack }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
         }),
         new webpack.NormalModuleReplacementPlugin(
           /node:crypto/,
-          (resource: { request: string; }) => {
+          (resource: {request: string}) => {
             resource.request = resource.request.replace(/^node:/, '');
           }
         )

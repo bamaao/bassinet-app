@@ -1,1 +1,1 @@
-export const BASE_URL="http://192.168.0.102:6142";
+export const BASE_URL="https://api.bassinet.top";
