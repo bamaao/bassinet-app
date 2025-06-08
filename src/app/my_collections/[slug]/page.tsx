@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
 import CollectionItemCard from "@/components/CollectionItemCard";
+import moment from "moment";
 
 export default function CollectionInfoPage() {
     const params = useParams();
@@ -58,7 +59,7 @@ export default function CollectionInfoPage() {
             </div>
             <div className="flex flex-col pt-3">
                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">创作于</dt>
-                <dd className="text-lg font-semibold">{collectionInfo.created_time}</dd>
+                <dd className="text-lg font-semibold">{moment.unix(Number(collectionInfo.created_time)).format('YYYY-MM-DD HH:mm:ss')}</dd>
             </div>
         </dl>
         <div className="mb-5"></div>

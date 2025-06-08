@@ -41,7 +41,7 @@ export default function VideoPage() {
     return <>
     <div className="m-auto container">
         <p className="text-red-500">{errorMessage}</p>
-        <p className="mb-1 text-gray-500 md:text-3xl dark:text-gray-400">{collectionItem.title}</p>
+        <p className="text-3xl font-semibold">{collectionItem.title}</p>
         <p className="mb-1 text-gray-500 md:text-xl dark:text-gray-400">{collectionItem.description}</p>
         <Player src={collectionItem.url_path} />
     </div>

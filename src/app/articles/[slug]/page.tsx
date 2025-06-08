@@ -38,7 +38,7 @@ useEffect(()=>{
   return <>
     <div className='m-auto container'>
     <p className="mt-2 text-sm text-red-600 dark:text-red-500"><span className="font-medium">{errorMessage}</span></p>
-    <p className="mb-1 text-gray-500 md:text-3xl dark:text-gray-400">{article.title}</p>
+    <p className="text-3xl font-semibold">{article.title}</p>
     <p className="mb-1 text-gray-500 md:text-xl dark:text-gray-400">{article.description}</p>
     <article className="m-auto min-w-md format lg:format-lg">
     <Markdown>{article.content}</Markdown>
