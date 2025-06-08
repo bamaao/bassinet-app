@@ -7,7 +7,8 @@ export interface CollectionType {
     created_time: bigint,
     icon_url: string,
     nft: NftInfo,
-    articles: ArticleType[]
+    // articles: ArticleType[]
+    items: CollectionItem[]
 }
 
 export interface PageInfoType {
@@ -21,6 +22,18 @@ export interface ArticleType {
     collection_id: string,
     description: string,
     content: string,
+    content_type: string,
+    created_time: bigint
+}
+
+export interface CollectionItem {
+    id: string,
+    title: string,
+    collection_id: string,
+    description: string,
+    content: string,
+    category: string,
+    url_path: string,
     content_type: string,
     created_time: bigint
 }

@@ -115,8 +115,8 @@ export default function BassinetNavbar() {
             <DropdownItem><a href="/create_collection">专辑</a></DropdownItem>
             <DropdownDivider />
             <DropdownItem><a href="/create_article">文章</a></DropdownItem>
+            <DropdownItem><a href="/create_video">视频</a></DropdownItem>
             {/* <DropdownItem>图集</DropdownItem>
-            <DropdownItem>视频</DropdownItem>
             <DropdownItem>音频</DropdownItem>
             <DropdownItem>文件夹</DropdownItem> */}
           </Dropdown>

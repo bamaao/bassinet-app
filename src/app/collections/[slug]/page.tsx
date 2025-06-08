@@ -1,7 +1,7 @@
 'use client'
 
 import { BASE_URL } from "@/app/lib/utils/constants";
-import Article from "@/components/ArticleCard";
+import CollectionItemCard from "@/components/CollectionItemCard";
 import { CollectionType } from "@/types/collection";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -51,12 +51,13 @@ export default function CollectionInfoPage() {
         </div>
     </dl>
     <div className="mb-5"></div>
-    {collectionInfo && collectionInfo.articles && collectionInfo.articles.length > 0 ? (
-        collectionInfo.articles.map((item) => (
-            <div key={item.id} className="h-[310px]">
-                <Article article={item} />
-            </div>
-            ))
+    {collectionInfo && collectionInfo.items && collectionInfo.items.length > 0 ? (
+        collectionInfo.items.map((item) => (
+                <div key={item.id} className="h-[310px]">
+                    <CollectionItemCard item={item} />
+                </div>
+                )
+            )
     ): (
             <p>No items available</p>
         )

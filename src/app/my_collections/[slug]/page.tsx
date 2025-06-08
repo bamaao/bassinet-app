@@ -2,11 +2,11 @@
 
 import { getAuthorization } from "@/app/lib/token";
 import { BASE_URL } from "@/app/lib/utils/constants";
-import Article from "@/components/ArticleCard";
 import { CollectionType } from "@/types/collection";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
+import CollectionItemCard from "@/components/CollectionItemCard";
 
 export default function CollectionInfoPage() {
     const params = useParams();
@@ -62,10 +62,10 @@ export default function CollectionInfoPage() {
             </div>
         </dl>
         <div className="mb-5"></div>
-        {collectionInfo && collectionInfo.articles && collectionInfo.articles.length > 0 ? (
-            collectionInfo.articles.map((item) => (
+        {collectionInfo && collectionInfo.items && collectionInfo.items.length > 0 ? (
+            collectionInfo.items.map((item) => (
                 <div key={item.id} className="h-[310px]">
-                    <Article article={item} />
+                    <CollectionItemCard item={item} />
                 </div>
                 ))
         ): (
